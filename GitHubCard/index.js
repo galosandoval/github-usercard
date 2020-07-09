@@ -1,9 +1,9 @@
+import axios from 'axios'
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -47,9 +47,64 @@ const followersArray = [];
         <p>Following: {users following count}</p>
         <p>Bio: {users bio}</p>
       </div>
-    </div>
+    </div
 */
 
+const myGitData = 'https://api.github.com/users/galosandoval'
+console.log(myGitData)
+function gitHubpage(gitObject) {
+  const card = document.createElement('div')
+  const imgURLOfUser = document.createElement('img')
+  const cardInfo = document.createElement('h3')
+  const username = document.createElement('p')
+  const location = document.createElement('p')
+  const profile = document.createElement('p')
+  const address = document.createElement('a')
+  const followers = document.createElement('p')
+  const following = document.createElement('p')
+  const bio = document.createElement('p')
+
+  card.appendChild(imgURLOfUser)
+  card.appendChild(cardInfo)
+  cardInfo.appendChild(username)
+  cardInfo.appendChild(location)
+  cardInfo.appendChild(profile)
+  profile.appendChild(address)
+  cardInfo.appendChild(followers)
+  cardInfo.appendChild(following)
+  cardInfo.appendChild(bio)
+  
+  card.classList.add('card')
+  imgURLOfUser.classList.add('card-info')
+  imgURLOfUser.src = '{image url of user}'
+  cardInfo.classList.add('name')
+  username.classList.add('username')
+  address.href = 'adress to users github'
+
+  // cardInfo.textContent = gitObject.login
+  // username.textContent = 'users user name'
+  // location.textContent = 'users location'
+  // address.textContent = 'address to users github'
+  // followers.textContent = 'Followers: ${}'
+  // following.textContent = 'Following: ${}'
+  // bio.textContent = '{users bio}'
+
+  return card
+}
+
+axios.get(myGitData)
+.then(function (value) {
+  const newCard = value.data
+  parentCards.appendChild(gitHubpage)(newCard)
+  console.log('works')
+  })
+.catch(function (error) {
+  console.log('error')
+})
+
+// console.log(gitHubpage())
+const parentCards = document.querySelector('.cards')
+parentCards.appendChild(gitHubpage(myGitData))
 /*
   List of LS Instructors Github username's:
     tetondan
