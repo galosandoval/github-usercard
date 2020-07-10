@@ -19,7 +19,7 @@ import axios from 'axios'
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
-    follow this link in your browser https://api.github.com/users/<Your github name>/followers,
+    follow this link in your browser https://api.github.com/users/galosandoval/followers,
     manually find some other users' github handles, or use the list found at the
     bottom of the page. Get at least 5 different Github usernames and add them as
     Individual strings to the friendsArray below.
@@ -28,7 +28,8 @@ import axios from 'axios'
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['jtwray', 'bikesh-maharjan', 'jdulay91', 'beaadelrosario', 'yvette-luong'];
+
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -51,11 +52,15 @@ const followersArray = [];
 */
 
 const myGitData = 'https://api.github.com/users/galosandoval'
-console.log(myGitData)
-function gitHubpage(gitObject) {
+// console.log(myGitData)
+function gitHubPage(gitObject) {
+  // debugger
+
+  //CREATED
   const card = document.createElement('div')
   const imgURLOfUser = document.createElement('img')
-  const cardInfo = document.createElement('h3')
+  const cardInfo = document.createElement('div')
+  const name = document.createElement('h3')
   const username = document.createElement('p')
   const location = document.createElement('p')
   const profile = document.createElement('p')
@@ -64,8 +69,30 @@ function gitHubpage(gitObject) {
   const following = document.createElement('p')
   const bio = document.createElement('p')
 
+  //CLASSES
+debugger
+  card.classList.add('card')
+  imgURLOfUser.classList.add('card-info')
+  cardInfo.classList.add('name')
+  username.classList.add('username')
+  
+  // CONTENT
+
+  imgURLOfUser.setAttribute('src', gitObject.avatar_url)
+  username.textContent = gitObject.login
+  location.textContent = gitObject.location
+  address.href = gitObject.html_url
+  address.textContent = 'Address to Users GitHub Page'
+  followers.textContent = `Followers: ${gitObject.followers}`
+  following.textContent = `Following: ${gitObject.following}`
+  bio.textContent = `User's Bio: ${gitObject.bio}`
+  name.textContent = gitObject.name
+  debugger
+  // APPENDING
+
   card.appendChild(imgURLOfUser)
   card.appendChild(cardInfo)
+  cardInfo.appendChild(name)
   cardInfo.appendChild(username)
   cardInfo.appendChild(location)
   cardInfo.appendChild(profile)
@@ -73,38 +100,34 @@ function gitHubpage(gitObject) {
   cardInfo.appendChild(followers)
   cardInfo.appendChild(following)
   cardInfo.appendChild(bio)
-  
-  card.classList.add('card')
-  imgURLOfUser.classList.add('card-info')
-  imgURLOfUser.src = '{image url of user}'
-  cardInfo.classList.add('name')
-  username.classList.add('username')
-  address.href = 'adress to users github'
-
-  // cardInfo.textContent = gitObject.login
-  // username.textContent = 'users user name'
-  // location.textContent = 'users location'
-  // address.textContent = 'address to users github'
-  // followers.textContent = 'Followers: ${}'
-  // following.textContent = 'Following: ${}'
-  // bio.textContent = '{users bio}'
 
   return card
+  debugger
 }
 
+const parentCards = document.querySelector('.cards')
 axios.get(myGitData)
-.then(function (value) {
-  const newCard = value.data
-  parentCards.appendChild(gitHubpage)(newCard)
-  console.log('works')
+.then(function (res) {
+  debugger
+  parentCards.appendChild(gitHubPage(res.data))
+  console.log('works', res)
   })
 .catch(function (error) {
+  debugger
   console.log('error')
 })
 
-// console.log(gitHubpage())
-const parentCards = document.querySelector('.cards')
-parentCards.appendChild(gitHubpage(myGitData))
+followersArray.forEach(follower => {
+  axios.get(`https://api.github.com/users/${follower}`)
+  .then(function(res) {
+    parentCards.appendChild(gitHubPage(res.data))
+  })
+  .catch(err => {
+    console.log('uh oh', err)
+  })
+})
+
+parentCards.appendChild(gitHubPage(myGitData))
 /*
   List of LS Instructors Github username's:
     tetondan
